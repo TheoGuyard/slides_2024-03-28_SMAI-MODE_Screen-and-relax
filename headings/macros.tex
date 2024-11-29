@@ -1,102 +1,141 @@
-% Objective values and functions
-\newcommand{\pobj}{p}
-\newcommand{\robj}{r}
-\newcommand{\dobj}{d}
-
-% Variables
-\newcommand{\pvletter}{x}
-\newcommand{\wvletter}{w}
-\newcommand{\dvletter}{u}
-\newcommand{\vvletter}{v}
-\newcommand{\bvletter}{z}
-\newcommand{\pv}{\mathbf{\pvletter}}
-\newcommand{\wv}{\mathbf{\wvletter}}
-\newcommand{\dv}{\mathbf{\dvletter}}
-\newcommand{\vv}{\mathbf{\vvletter}}
-\newcommand{\bv}{\mathbf{\bvletter}}
-\newcommand{\pvi}[1]{\pvletter_{#1}}
-\newcommand{\wvi}[1]{\wvletter_{#1}}
-\newcommand{\dvi}[1]{\dvletter_{#1}}
-\newcommand{\vvi}[1]{\vvletter_{#1}}
-\newcommand{\bvi}[1]{\bvletter_{#1}}
+% Fonts
+\newcommand{\fontpb}[1]{\mathcal{#1}}
+\newcommand{\fontobj}[1]{#1}
+\newcommand{\fontset}[1]{\mathcal{#1}}
+\newcommand{\fontfunc}[1]{#1}
+\newcommand{\fontregion}[1]{\mathcal{#1}}
+\newcommand{\fontop}[1]{\text{#1}}
 
 % Problem data
+\newcommand{\sparsitylevel}{k}
+\newcommand{\noise}{\boldsymbol{\epsilon}}
+\newcommand{\noisee}[1]{\epsilon_{#1}}
 \newcommand{\pdim}{n}
 \newcommand{\ddim}{m}
-\newcommand{\dic}{\mathbf{A}}
-\newcommand{\dici}[1]{\mathbf{a}_{#1}}
-\newcommand{\dicii}[1]{a_{#1}}
 \newcommand{\obs}{\mathbf{y}}
 \newcommand{\obsi}[1]{y_{#1}}
+\newcommand{\dic}{\mathbf{A}}
+\newcommand{\atom}[1]{\mathbf{a}_{#1}}
+\newcommand{\lossfunc}{\fontfunc{f}}
+\newcommand{\regfunc}{\fontfunc{g}}
+\newcommand{\smoothfunc}{\fontfunc{h}}
 \newcommand{\reg}{\lambda}
-\newcommand{\groundtruth}{\pv^{\dagger}}
-\newcommand{\lfunc}{f}
-\newcommand{\pfunc}{h}
-\newcommand{\rfunc}{g}
-\newcommand{\dfunc}{D}
-\newcommand{\relaxrfunc}{\tilde{g}}
-\newcommand{\relaxpfunc}{\tilde{h}}
-\newcommand{\bigM}{M}
-\newcommand{\regtwo}{\alpha}
-\newcommand{\rslope}{\tau}
-\newcommand{\rlimit}{\mu}
-\newcommand{\noise}{\boldsymbol{\epsilon}}
+\newcommand{\snr}{s}
+\newcommand{\enetparam}{\gamma}
+\newcommand{\regmax}{\reg_{\max}}
+\newcommand{\corrparam}{\rho}
+\newcommand{\corrmat}{\mathbf{K}}
+\newcommand{\corrmatel}{K}
+\newcommand{\groundtruth}{\mathbf{x}^{\dagger}}
+\newcommand{\normal}{\fontset{N}}
+\newcommand{\bernoulli}{\fontset{B}}
+\newcommand{\compvec}{\boldsymbol{\eta}}
+\newcommand{\setsparsefunc}{\fontset{G}}
+\newcommand{\scvx}{\mu}
+\newcommand{\lipschitz}{L}
+\newcommand{\spectralradius}{\sigma_{\dic}}
 
-% Indices
-\newcommand{\idxentry}{i}
-
-% BnB
-\newcommand{\pset}{\mathcal{X}}
-\newcommand{\setidx}{\mathcal{S}}
-\newcommand{\setzero}{\setidx_0}
-\newcommand{\setone}{\setidx_1}
-\newcommand{\setnone}{\setidx_\bullet}
-\newcommand{\nodeSymb}{\nu}
-\newcommand{\node}[1]{#1^{\nodeSymb}}
+% Problems
+\newcommand{\Primalletter}{P}
+\newcommand{\Dualletter}{D}
+\newcommand{\primalletter}{p}
+\newcommand{\dualletter}{d}
+\newcommand{\ppb}{\fontpb{\Primalletter}}
+\newcommand{\dpb}{\fontpb{\Dualletter}}
+\newcommand{\pfunc}{\fontfunc{\Primalletter}}
+\newcommand{\dfunc}{\fontfunc{\Dualletter}}
+\newcommand{\pobj}{\primalletter}
+\newcommand{\dobj}{\dualletter}
+\newcommand{\reform}[2]{#1_{#2}}
+		
+% Variables
+\newcommand{\pvletter}{x}
+\newcommand{\dvletter}{u}
+\newcommand{\svletter}{s}
+\newcommand{\tvletter}{\theta}
+\newcommand{\gvletter}{g}
+\newcommand{\mvletter}{w}
+\newcommand{\pv}{\mathbf{\pvletter}}
+\newcommand{\dv}{\mathbf{\dvletter}}
+\newcommand{\sv}{\mathbf{\svletter}}
+\newcommand{\tv}{\boldsymbol{\tvletter}}
+\newcommand{\gv}{\mathbf{\gvletter}}
+\newcommand{\mv}{\mathbf{\mvletter}}
+\newcommand{\pvi}[1]{\pvletter_{#1}}
+\newcommand{\dvi}[1]{\dvletter_{#1}}
+\newcommand{\svi}[1]{\svletter_{#1}}\newcommand{\tvi}[1]{\tvletter_{#1}}
+\newcommand{\gvi}[1]{\gvletter_{#1}}
+\newcommand{\mvi}[1]{\mvletter_{#1}}
 
 % Screening
-\newcommand{\saferegion}{\mathcal{R}}
-\newcommand{\safesphere}{\mathcal{S}}
+\newcommand{\idxentry}{i}
+\newcommand{\idxscreen}{i}
+\newcommand{\setind}{\fontset{S}}
+\newcommand{\setindc}{\bar{\setind}}
+\newcommand{\setzer}{\setind_0}
+\newcommand{\setnnz}{\setind_1}
+\newcommand{\setrem}{\setind_\bullet}
+\newcommand{\saferegion}{\fontregion{R}}
+\newcommand{\safesphere}{\fontregion{S}}
 \newcommand{\spherecenter}{\mathbf{c}}
 \newcommand{\sphereradius}{r}
+\newcommand{\gradvec}{\mathbf{h}}
+\newcommand{\hessmat}{\mathbf{H}}
+\newcommand{\radiusthresh}{\boldsymbol{\delta}}
+\newcommand{\radiusthreshi}[1]{\delta_{#1}}
+\newcommand{\rateconst}{C}
+\newcommand{\ratefunc}{\fontfunc{R}}
+\newcommand{\ratepower}{\gamma}
+\newcommand{\newtonstep}{\alpha}
 
-% Peeling
-\newcommand{\bigL}{\boldsymbol{\alpha}}
-\newcommand{\bigU}{\boldsymbol{\beta}}
-\newcommand{\bigLi}[1]{\alpha_{#1}}
-\newcommand{\bigUi}[1]{\beta_{#1}}
+% Figures styles
+\def\0{{\mathbf 0}}
+\def\1{{\mathbf 1}}
 
-% Math operators
-\DeclareMathOperator{\argmax}{argmax}
-\DeclareMathOperator{\argmin}{argmin}
-\DeclareMathOperator{\biconjugate}{biconj}
-\DeclareMathOperator{\card}{card}
-\DeclareMathOperator{\complset}{cmpl}
-\DeclareMathOperator{\convex}{cvx}
-\DeclareMathOperator{\diam}{diam}
-\DeclareMathOperator{\dom}{dom}
-\DeclareMathOperator{\interior}{int}
-\DeclareMathOperator{\prox}{prox}
-\DeclareMathOperator{\rank}{rank}
-\DeclareMathOperator{\sign}{sign}
+% Misc
+\newcommand{\genericfunc}{\fontfunc{\omega}}
+\newcommand{\hilbertspace}{\fontset{H}}
+\newcommand{\stepsize}{\kappa}
 
-
-% Math misc
-\newcommand{\1}{\mathbf{1}}
-\newcommand{\0}{\mathbf{0}}
+% Math things
+\newcommand{\Id}{\mathbf{I}}
 \newcommand{\abs}[1]{|#1|}
-\newcommand{\biconj}[1]{#1^{**}}
+\newcommand{\argmin}{\fontop{argmin}}
+\newcommand{\argmax}{\fontop{argmax}}
 \newcommand{\bigO}{\mathcal{O}}
-\newcommand{\conj}[1]{#1^{*}}
-\newcommand{\icvx}{\eta}
-\newcommand{\intervint}[2]{[#1,#2]}
-\newcommand{\iter}[2]{#1^{#2}}
+\newcommand{\clip}[3]{[#1]_{#2}^{#3}}
+\newcommand{\card}[1]{|#1|}
+\newcommand{\conj}[1]{#1^\star}
+\newcommand{\dom}[1]{\fontop{dom}(#1)}
+\newcommand{\gap}{\fontop{gap}}
+\newcommand{\grad}{\nabla}
+\newcommand{\hess}{\grad^2}
+\newcommand{\subdiff}{\partial}
+\newcommand{\Icvx}{\eta}
+\newcommand{\intervint}[2]{\llbracket#1,#2\rrbracket}
+\newcommand{\inv}[1]{#1^{-1}}
+\newcommand{\iter}[2]{#1^{(#2)}}
 \newcommand{\norm}[2]{\|#1\|_#2}
 \newcommand{\opt}[1]{#1^{\star}}
+\newcommand{\pclsc}{\Gamma}
+\newcommand{\prox}[2]{\fontop{prox}_{#1}(#2)}
 \newcommand{\pospart}[1]{[#1]_+}
+\newcommand{\scalprod}[2]{\langle{#1,#2}\rangle}
 \newcommand{\separable}[2]{#1_{#2}}
-\newcommand{\subdiff}{\partial}
-\newcommand{\transp}[1]{#1^{\mathrm{T}}}
+\newcommand{\sign}[1]{\fontop{sign}({#1})}
+\newcommand{\softhresh}[2]{\Tc_{#2}\left(#1\right)}
+\newcommand{\supp}[1]{\mathrm{supp}\left(#1\right)}
+\newcommand{\relu}[1]{[#1]_+}
+\newcommand{\restrict}[2]{#1_{#2}}
+\newcommand{\transp}[1]{#1^{\text{T}}}
+\newcommand{\complset}[1]{#1^{\complement}}
 
-% Edition macros
-\newcommand{\AddTodo}[1]{\textcolor{red}{[#1]}}
+% Miscellaneous
+\def\ie{\textit{i.e.}\xspace}
+\def\eg{\textit{e.g.}\xspace}
+\def\etal{\textit{et al.}\xspace}
+\def\resp{\text{resp.}\xspace}
+\def\iif{\text{i.f.f.}\xspace}
+\def\iid{\text{i.i.d.}\xspace}
+\def\st{\text{s.t.}\xspace}
+

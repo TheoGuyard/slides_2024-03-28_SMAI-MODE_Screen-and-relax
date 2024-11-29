@@ -1,0 +1,81 @@
+\section{Toward new solution methods}
+
+\begin{frame}{Reformulation}
+    \begin{tikzpicture}[overlay,remember picture]
+        \onslide<+-> {
+            \node[align=center,text width=0.4\textwidth] (problem) at ($(current page.north)+(0,-0.2\textheight)$) {%
+                \begin{blockcolor}{black}{Initial problem}
+                    \centering
+                    $\min_{x} \lossfunc(\dic\pv) + \reg\emphcolor{ColorOne}{\norm{\pv}{1}} + \smoothfunc(\pv)$
+                \end{blockcolor}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=center,text width=0.6\textwidth] (ideal) at ($(problem)+(0,-0.3\textheight)$) {%
+                \begin{blockcolor}{black}{Ideal reformulation}
+                    \centering
+                    $\left\{\begin{array}{rl}
+                        \min_{x} &\lossfunc(\dic_{\opt{\setnnz}}\pv_{\opt{\setnnz}}) + \reg\emphcolor{ColorOne}{\transp{\tv_{\opt{\setnnz}}}\pv_{\opt{\setnnz}}} + \smoothfunc(\pv_{\opt{\setnnz}}) \\
+                        \text{s.t.} &\emphcolor{ColorOne}{\pv_{\opt{\setzer}} = \0}
+                    \end{array}\right.$
+                \end{blockcolor}
+            };
+            %
+            \draw[->,ultra thick] (problem.east) .. controls ($(problem.south east)+(3,0)$) .. ($(ideal.north east)+(0,-0.3)$) node[midway,draw,fill=white,align=center,font=\scriptsize] {Perfect identif. \\ $\opt{\setzer} = \{\idxentry \ | \ \opt{\pvi{\idxentry}} = 0\}$ \\ $\opt{\setnnz} = \{\idxentry \ | \ \opt{\pvi{\idxentry}} \neq 0\}$};
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=center,text width=0.75\textwidth] (problemsmooth) at ($(ideal)+(0,-0.375\textheight)$) {%
+                \begin{blockcolor}{black}{Partial reformulation}
+                    \centering
+                    $\left\{
+                        \begin{array}{rlll}
+                            \min & \lossfunc(\dic_{\setnnz\cup\setrem}\pv_{\setnnz\cup\setrem}) &+ \ \reg\emphcolor{ColorOne}{\transp{\tv_{\setnnz}}\pv_{\setnnz}} &+ \ \smoothfunc(\pv_{\setnnz})
+                            \\
+                            &&+ \ \reg\emphcolor{ColorOne}{\norm{\pv_{\setrem}}{1}} &+ \ \smoothfunc(\pv_{\setrem}) \\
+                            \text{s.t.} & \emphcolor{ColorOne}{\pv_{\setzer} = \0}
+                        \end{array}
+                    \right.$
+                \end{blockcolor}
+            };
+            %
+            \draw[->,ultra thick] (problem.west) .. controls ($(problem.south west)+(-3,0)$) .. ($(problemsmooth.north west)+(0,-0.3)$) node[midway,draw,fill=white,align=left,font=\scriptsize] {~Screen \& Relax \\ $\setzer \subseteq \opt{\setzer}$ \\ $\setnnz \subseteq \opt{\setnnz}$ \\ $\setrem = \complset{(\setzer \cup \setnnz)}$};
+        }
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Algorithm embedding}
+    \begin{figure}[!h]
+        \centering
+        \begin{minipage}{0.8\linewidth}
+            \begin{algorithm}[H]
+                \label{algo:screen-and-relax}
+                \caption{Screen \& Relax}
+                \begin{algorithmic}[1]
+                    \State \textbf{initialize} $(\setzer,\setnnz,\setrem)=(\emptyset,\emptyset,\intervint{1}{\pdim})$
+                    \Repeat
+                        \State \texttt{\emphcolor{ColorOne}{// Iterate update}}
+                        \State 
+                        $\pv_{\setrem}^{k} \gets 1^{st}\text{OrderIteration}(\pv^{k-1})$
+                        \State 
+                        $\pv_{\setnnz}^{k} \gets 2^{nd}\text{OrderIteration}(\pv^{k-1})$
+                        \State 
+                        $\pv_{\setzer}^{k} \gets \0$
+                        \State \texttt{\emphcolor{ColorOne}{// Problem update}}
+                        \State Construct a new safe region $\saferegion^k$ from $\pv^{k}$
+                        \State Update $(\setzer,\setnnz,\setrem)$ using $\saferegion^k$
+                    \Until{convergence criterion is met}
+                \end{algorithmic}
+            \end{algorithm} 
+        \end{minipage}
+        ~\\~\\
+        Iteration cost reduction: \emphcolor{ColorThree}{$\pdim \rightarrow \pdim - \card{\setzer}$}
+        ~\\
+        $\quad \ \, $ Faster convergence rate: \emphcolor{ColorThree}{(sub-)linear $\rightarrow$ super-linear}
+    \end{figure}
+\end{frame}

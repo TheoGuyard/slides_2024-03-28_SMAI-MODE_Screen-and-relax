@@ -1,0 +1,263 @@
+\section{Screening and Relaxing Tests}
+
+\begin{frame}{Geometrical idea \hfill{\small{$\regfunc(\pv) = \reg\norm{\pv}{1} + \smoothfunc(\pv)$}}}
+    \begin{tikzpicture}[overlay,remember picture]
+        \onslide<+-> {
+            \node[align=center] (idea) at ($(current page.north)+(0,-0.2\textheight)$) {
+                \textbf{Characterize the nullity in $\opt{\pv}$ from \emphcolor{ColorOne}{$\subdiff\regfunc(\opt{\pv})$}}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \begin{scope}[xshift=0.12\linewidth,yshift=0.75cm]
+                \node (origin) at (0,0) {};
+                \draw[->] (-1.25,0) -- (1.25, 0) node [xshift=5pt,yshift=-0.5pt,font={\small}] {$\pvi{}$};
+                \draw[->] (0,-1.25) -- (0, 1.25);
+                \draw[ColorTwo,ultra thick,domain=-1:1] plot (\x, {0.5 * abs(\x) + 0.25 * (\x)^2});
+                \node at (-1.5,1) {\textcolor{ColorTwo}{$\regfunc(\pv)$}};
+                \node at (0,1.5) {$\smoothfunc(\pvi{}) = \pv^2$};
+                \fill[black] (-0.05,0.29) rectangle (0.05,0.31) node[xshift=-7pt,font={\small}] {$\reg$};
+                \fill[black] (-0.05,-0.29) rectangle (0.05,-0.31) node[xshift=7pt,font={\small}] {$\scalebox{0.5}[1.0]{\( - \)}\reg$};
+            \end{scope}
+            \begin{scope}[xshift=0.5\linewidth,yshift=0.75cm]
+                \node (origin) at (0,0) {};
+                \draw[->] (-1.25,0) -- (1.25, 0) node [xshift=5pt,yshift=-0.5pt,font={\small}] {$\pvi{}$};
+                \draw[->] (0,-1.25) -- (0, 1.25);
+                \draw[ColorTwo,ultra thick,domain=-0.9:0.9] plot (\x, {0.1 * abs(\x) - 0.4 * ln(1-abs(\x))});
+                \node at (-1.5,1) {\textcolor{ColorTwo}{$\regfunc(\pv)$}};
+                \node at (0,1.5) {$\smoothfunc(\pvi{}) = \ln(\tfrac{1}{1-\abs{\pv}})$};
+                \fill[black] (-0.05,0.29) rectangle (0.05,0.31) node[xshift=-7pt,font={\small}] {$\reg$};
+                \fill[black] (-0.05,-0.29) rectangle (0.05,-0.31) node[xshift=7pt,font={\small}] {$\scalebox{0.5}[1.0]{\( - \)}\reg$};
+            \end{scope}
+            \begin{scope}[xshift=0.88\linewidth,yshift=0.75cm]
+                \node (origin) at (0,0) {};
+                \draw[->] (-1.25,0) -- (1.25, 0) node [xshift=5pt,yshift=-0.5pt,font={\small}] {$\pvi{}$};
+                \draw[->] (0,-1.25) -- (0, 1.25);
+                \draw[ColorTwo,ultra thick,domain=-1:1] plot (\x, {0.3*abs(\x)+0.3*(exp((\x)^2)-1)});
+                \node at (-1.5,1) {\textcolor{ColorTwo}{$\regfunc(\pv)$}};
+                \node at (0,1.5) {$\smoothfunc(\pv) = e^{\pv^2}-1$};
+                \fill[black] (-0.05,0.29) rectangle (0.05,0.31) node[xshift=-7pt,font={\small}] {$\reg$};
+                \fill[black] (-0.05,-0.29) rectangle (0.05,-0.31) node[xshift=7pt,font={\small}] {$\scalebox{0.5}[1.0]{\( - \)}\reg$};
+            \end{scope}
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \begin{scope}[xshift=0.12\linewidth,yshift=0.75cm]
+                \draw[ColorThree,ultra thick,domain=-1:-0.001] plot (\x, {0.3 * sign(\x) + 0.75 * \x});
+                \draw[ColorThree,ultra thick,domain=0.001:1] plot (\x, {0.3 * sign(\x) + 0.75 * \x});
+                \draw[ColorThree,ultra thick] (0,-0.3) -- (0,0.3);
+                \node at (-1.5,-1) {\textcolor{ColorThree}{$\subdiff\regfunc(\pv)$}};
+            \end{scope}
+            \begin{scope}[xshift=0.5\linewidth,yshift=0.75cm]
+                \draw[ColorThree,ultra thick,domain=-0.9:-0.001] plot (\x, {sign(\x) * (0.2 + 0.1 / (1 - abs(\x)))});
+                \draw[ColorThree,ultra thick,domain=0.001:0.9] plot (\x, {sign(\x) * (0.2 + 0.1 / (1 - abs(\x)))});
+                \draw[ColorThree,ultra thick] (0,-0.3) -- (0,0.3);
+                \node at (-1.5,-1) {\textcolor{ColorThree}{$\subdiff\regfunc(\pv)$}};
+            \end{scope}
+            \begin{scope}[xshift=0.88\linewidth,yshift=0.75cm]
+                \draw[ColorThree,ultra thick,domain=-1:-0.001] plot (\x, {0.3*sign(\x)+0.3*(2*\x*(exp((\x)^2)-1))});
+                \draw[ColorThree,ultra thick,domain=0.001:1] plot (\x, {0.3*sign(\x)+0.25*(2*\x*(exp((\x)^2)-1))});
+                \draw[ColorThree,ultra thick] (0,-0.3) -- (0,0.3);
+                \node at (-1.5,-1) {\textcolor{ColorThree}{$\subdiff\regfunc(\pv)$}};
+            \end{scope}
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=center,text width=0.6\linewidth] (tests) at ($(current page.north)+(0,-0.8\textheight)$) {%
+                \begin{blockcolor}{black}{Geometrical screening and relaxing test}
+                    \centering
+                    $\begin{array}{ll}
+                        \subdiff_{\idxentry}\regfunc(\opt{\pv}) \subset [-\reg,\reg] &\implies \ \opt{\pvi{\idxentry}} = 0 \\
+                        \subdiff_{\idxentry}\regfunc(\opt{\pv}) \not\subset [-\reg,\reg] &\implies \ \opt{\pvi{\idxentry}} \neq 0 
+                    \end{array}$
+                \end{blockcolor}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node at ($(current page.north) + (0,-\textheight)$){\emphcolor{ColorThree}{\textbf{$\subdiff\regfunc(\opt{\pv})$ is not available}}};
+        }
+    \end{tikzpicture}         
+\end{frame}
+
+\begin{frame}{Duality to rescue}
+    \begin{tikzpicture}[overlay,remember picture]
+        \onslide<+-> {
+            \node[align=center] (idea) at ($(current page.north)+(0,-0.2\textheight)$) {
+                \textbf{Characterize the nullity in $\opt{\pv}$ from \emphcolor{ColorOne}{the dual problem}}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=center,text width=0.55\linewidth] (dual) at ($(current page.north)+(0,-0.35\textheight)$) {%
+                \begin{blockcolor}{black}{Dual problem}
+                    \centering
+                    $\opt{\dv} \in \textstyle\argmax_{\dv \in \kR^{\ddim}} \ -\conj{\lossfunc}(-\dv) - \conj{\regfunc}(\transp{\dic}\dv)$
+                \end{blockcolor}
+            };
+            \node[align=center,draw,ultra thick] (optcond) at ($(dual)+(0,-0.15\textheight)$) {%
+                \emphcolor{ColorOne}{$\transp{\atom{\idxentry}}\opt{\dv} \in \subdiff_{\idxentry}{\regfunc}(\opt{\pv})$}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \begin{scope}[xshift=0.12\linewidth,yshift=-0.5cm]
+                \node (origin) at (0,0) {};
+                \draw[->] (-1.25,0) -- (1.25, 0) node [xshift=5pt,yshift=-0.5pt,font={\small}] {$\pvi{}$};
+                \draw[->] (0,-1.25) -- (0, 1.25);
+                \draw[ColorTwo,ultra thick,domain=-1:1] plot (\x, {0.5 * abs(\x) + 0.25 * (\x)^2});
+                \node at (-1.5,1) {\textcolor{ColorTwo}{$\regfunc(\pv)$}};
+                \fill[black] (-0.05,0.29) rectangle (0.05,0.31) node[xshift=-7pt,font={\small}] {$\reg$};
+                \fill[black] (-0.05,-0.29) rectangle (0.05,-0.31) node[xshift=7pt,font={\small}] {$\scalebox{0.5}[1.0]{\( - \)}\reg$};
+                \draw[ColorThree,ultra thick,domain=-1:-0.001] plot (\x, {0.3 * sign(\x) + 0.75 * \x});
+                \draw[ColorThree,ultra thick,domain=0.001:1] plot (\x, {0.3 * sign(\x) + 0.75 * \x});
+                \draw[ColorThree,ultra thick] (0,-0.3) -- (0,0.3);
+                \node at (-1.5,-1) {\textcolor{ColorThree}{$\subdiff\regfunc(\pv)$}};
+            \end{scope}
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=center,text width=0.5\linewidth] (tests) at ($(optcond)+(0,-0.35\textheight)$) {%
+                \begin{blockcolor}{black}{Screening and relaxing test}
+                    \centering
+                    $\begin{array}{rcl}
+                        \abs{\transp{\atom{\idxentry}}\opt{\dv}} < \reg &\implies& \opt{\pvi{\idxentry}} = 0 \\
+                        \abs{\transp{\atom{\idxentry}}\opt{\dv}} > \reg &\implies& \opt{\pvi{\idxentry}} \neq 0
+                    \end{array}$
+                \end{blockcolor}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node at ($(current page.north) + (0,-\textheight)$){\emphcolor{ColorThree}{\textbf{$\opt{\dv}$ is not available}}};
+        }
+    \end{tikzpicture}         
+\end{frame}
+
+\begin{frame}{Safe regions}
+    \begin{tikzpicture}[overlay,remember picture]
+        \onslide<+-> {
+            \node[align=center] (idea) at ($(current page.north)+(0,-0.2\textheight)$) {
+                \textbf{Characterize the nullity in $\opt{\pv}$ from \emphcolor{ColorOne}{a safe region}}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=center,text width=0.75\linewidth] (safetests) at ($(current page.north)+(0,-0.50\textheight)$) {%
+                \begin{blockcolor}{black}{Safe screening and relaxing test}
+                    \centering
+                    $\begin{array}{rcl}
+                        \max_{\emphcolor{ColorOne}{\dv \in \saferegion}}\abs{\transp{\atom{\idxentry}}\dv} < \reg &\implies& \opt{\pvi{\idxentry}} = 0 \\
+                        \min_{\emphcolor{ColorOne}{\dv \in \saferegion}}\abs{\transp{\atom{\idxentry}}\dv} > \reg &\implies& \opt{\pvi{\idxentry}} \neq 0
+                    \end{array}$
+                \end{blockcolor}
+            };
+            %
+            \node[align=center,draw,ultra thick] at ($(safetests.north)+(0,0.25)$) {\emphcolor{ColorOne}{Safe region: $\opt{\dv} \in \saferegion$}};
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \begin{scope}[xshift=1.5cm,yshift=-3.5cm]
+                \coordinate (A) at (0,0);
+                \coordinate (B) at (0,2.6);
+                \coordinate (C) at (3,2.6);
+                \coordinate (D) at (3,0);
+                \coordinate (E) at (2.2,0.9);
+                \coordinate (F) at (1.6,1.8);
+                \coordinate (G) at (2.4,0.4);
+                \coordinate (H) at (0.8,2.4);
+
+                \path[fill=ColorThree!15] (A) to (G) -- (2.5,0) to (A);
+                \path[fill=ColorThree!15] (A) to (H) -- (0,2.5) to (A);
+                \path[fill=ColorTwo!15] (A) to (F) -- (E) to (A);
+
+                \draw[ultra thick,->] ($(A)-(0,0.1)$) -- (B);
+                \draw[ultra thick,->] ($(A)-(0.1,0)$) -- (D);
+                \draw[dashed] (A) -- (E);
+                \draw[dashed] (A) -- (F);
+                \draw[dashed] (A) -- (G);
+                \draw[dashed] (A) -- (H);
+
+                \draw[thick,ColorThree,->] (A) -- (5:2) node[right] {$\atom{1}$};
+                \draw[thick, ->] (A) -- (16:2) node[right] {$\atom{2}$};
+                \draw[thick, ColorTwo, ->] (A) -- (32:2) node[right] {$\atom{3}$};
+                \draw[thick, ColorTwo, ->] (A) -- (42:2) node[right] {$\atom{4}$};
+                \draw[thick, ->] (A) -- (60:2) node[right] {$\atom{5}$};
+                \draw[thick, ColorThree, ->] (A) -- (85:2) node[right] {$\atom{6}$};
+                
+                \filldraw[color=black, fill=gray!5, very thick] (2.9,2) circle (0.5);
+                \node at (3.6,2.2) {$\saferegion$};
+                \filldraw[color=black, fill=black] (2.7,2) circle (0.03);
+                \node at (2.9, 2.2) {$\opt{\dv}$};
+            \end{scope}
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[text width=0.4\textwidth,align=center,draw,ultra thick,fill=gray!15,font=\scriptsize] at (8.5,-2.75) {
+                \textbf{Identifiability of the nullity in $\opt{\pv}$} \\ If \emphcolor{ColorOne}{$\smoothfunc$ is strictly convex at $\pv = \0$}, all zero and non-zero entries can be identified if $\saferegion$ is sufficently tight.
+            };
+        }
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Working regimes}
+    \begin{tikzpicture}[overlay,remember picture]
+        \onslide<+-> {
+            \begin{scope}[xshift=-2.5cm]
+                \node (origin) at (0.5\textwidth,0) {};
+
+                \path[ultra thick,draw,use Hobby shortcut,closed=true,fill=black!25] ($(origin)+(-3,0)$)..($(origin)+(-2,2)$)..($(origin)+(0.5,3)$)..($(origin)+(0.5,3)$)..($(origin)+(2,1)$)..($(origin)+(2.3,-1.5)$)..($(origin)+(-0.4,-2.2)$);
+
+                \path[ultra thick,draw,use Hobby shortcut,closed=true,fill=black!25] ($(origin)+(-0.8,0)$)..($(origin)+(-0.75,0.2)$)..($(origin)+(0.5,0.5)$)..($(origin)+(0.5,0.4)$)..($(origin)+(0.3,-0.5)$)..($(origin)+(-0.4,-0.2)$);
+
+                \filldraw[color=ColorThree, fill=ColorThree!5,very thick,dashed,opacity=0.25] (origin) circle (2);
+                \filldraw[color=ColorTwo, fill=ColorTwo!5,very thick,dashed,opacity=0.25] (origin) circle (1);
+                \draw[color=ColorThree,very thick,dashed] (origin) circle (2);
+                \draw[color=ColorTwo, very thick,dashed] (origin) circle (1);
+
+                \path[ultra thick,draw,use Hobby shortcut,closed=true] ($(origin)+(-0.8,0)$)..($(origin)+(-0.75,0.2)$)..($(origin)+(0.5,0.5)$)..($(origin)+(0.5,0.4)$)..($(origin)+(0.3,-0.5)$)..($(origin)+(-0.4,-0.2)$);
+                \filldraw[color=black, fill=black] (origin) circle (0.03);
+                \node at ($(origin)+(-0.15,0.1)$) {$\opt{\dv}$};
+
+                \draw[<->,color=ColorTwo, very thick] ($(origin)+(0.05,0.05)$) -- ($(origin)+(0.7,0.7)$);
+                \draw[<->,color=ColorThree, very thick] ($(origin)+(0.05,-0.05)$) -- ($(origin)+(1.4,-1.4)$);
+                \node at ($(origin)+(1,0.9)$) {\emphcolor{ColorTwo}{$\sphereradius_{\min}$}};
+                \node at ($(origin)+(1.7,-1.6)$) {\emphcolor{ColorThree}{$\sphereradius_{\max}$}};
+            \end{scope}
+            \node[align=left] at (8.5,2.5) {$\saferegion \subset \safesphere(\opt{\dv},\emphcolor{ColorTwo}{\sphereradius_{\min}}) \, \implies$ \emphcolor{ColorOne}{all} tests passed \\ $\saferegion \supset \safesphere(\opt{\dv},\emphcolor{ColorThree}{\sphereradius_{\max}}) \implies$ \emphcolor{ColorOne}{no} tests passed};
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[text width=0.15\textwidth,align=center,draw,ultra thick] at (8.5,1) {$\emphcolor{ColorTwo}{\sphereradius_{\min} > 0}$};
+            \node[text width=0.5\textwidth,align=center] at (8.5,-0.5) {We know how to construct safe regions with a \emphcolor{ColorOne}{radius proportional to the (square root of) the duality gap}};
+            %
+            \node[text width=0.5\textwidth,align=center] at (8.5,-2.5) {Guaranty to identify all zeros and non-zeros in $\opt{\pv}$ in \emphcolor{ColorOne}{finite time}};
+            %
+            \draw[ultra thick,->] (8.5,-1.25) -- (8.5,-2);
+        }
+    \end{tikzpicture}
+\end{frame}

@@ -1,48 +1,46 @@
-\documentclass[xcolor={x11names},10pt]{beamer}
+\documentclass[10pt,xcolor={dvipsnames}]{beamer}
 
-\usetheme{metropolis}
-\metroset{numbering=fraction}
-\metroset{block=fill}
+\usetheme[numbering=fraction,block=fill]{metropolis}
+\usecolortheme{seahorse}
+\setbeamertemplate{blocks}[rounded]
 
-\newcommand{\backupbegin}{
-  \newcounter{finalframe}
-  \setcounter{finalframe}{\value{framenumber}}
-}
-\newcommand{\backupend}{
-  \setcounter{framenumber}{\value{finalframe}}
-}
-
-\usepackage{headings/kmath}
+\usepackage{kmath}
 \input{headings/packages}
 \input{headings/macros}
 
+% Colors
+\definecolor{ColorOne}{HTML}{EB811B}
+\definecolor{ColorTwo}{HTML}{137D91}
+\definecolor{ColorThree}{HTML}{C8412F}
+\definecolor{ColorFour}{HTML}{14B03D}
+
+% Beamer elements
+\newcommand{\emphcolor}[2]{{\color{#1}#2}}
 \newenvironment<>{blockcolor}[2]{%
   \setbeamercolor{block title}{fg=#1,bg=#1!15}%
   \setbeamercolor{block body}{fg=#1,bg=#1!15}%
-  \begin{block}#3{\centering#2}
-}{%
-  \end{block}
-}
+  \begin{block}#3{\centering#2\par}}{\end{block}}
 
-\definecolor{TolLightWhite}{HTML}{FAFAFA}
-\definecolor{TolLightOrange}{HTML}{ECA244}
+% Title page
+\title{\large{Screen-and-Relax for Sparse Support Identification}}
+\author{\textbf{Théo Guyard${}^{\star}$}, Cédric Herzet${}^{\diamond}$, Clément Elvira${}^{\dagger}$}
+\date{%
+  \scriptsize{${}^{\star}$Inria, Rennes, France} \\ 
+  \scriptsize{${}^{\diamond}$Ensai, Rennes, France} \\ 
+  \scriptsize{${}^{\dagger}$CentraleSupelec, Rennes, France}
+}
+\institute{SMAI-MODE days \\ INSA Lyon, France \\ March 28th, 2024}
+
 
 \begin{document}
 
-\begin{frame}[plain,noframenumbering]
-  \begin{center}
-    {\large\textbf{Slides Template}}
-  \end{center}
-  \begin{center}
-    Théo Guyard
-  \end{center}
-\end{frame}
+\maketitle
 
-% Main slides
-
-% \backupbegin
-% Supplementary slides
-% \backupend
-
+\input{pages/context}
+\input{pages/tests}
+\input{pages/implementation}
+\input{pages/numerics}
+\input{pages/takehome}
+\input{pages/questions}
 
 \end{document}

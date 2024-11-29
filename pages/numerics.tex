@@ -1,0 +1,220 @@
+\section{Numerics}
+
+\begin{frame}{Screen \& Relax effects}
+    \begin{tikzpicture}[overlay,remember picture]
+        \node[align=center,text width=4cm] (problem) at (0.5\textwidth,3.75cm) {%
+            \begin{blockcolor}{black}{}
+                \centering
+                $\min_{\pv} \lossfunc(\dic\pv) + \reg\norm{\pv}{1} + \smoothfunc(\pv)$
+            \end{blockcolor}
+        };
+        %
+        \begin{scope}[xshift=1.75cm]
+            \begin{groupplot}[
+                group style     = {
+                    group size      = 2 by 2,
+                    xticklabels at  = edge bottom,
+                    yticklabels at  = edge left,
+                    vertical sep    = 10pt,
+                    horizontal sep  = 10pt,
+                },
+                height          = 3.75cm,
+                width           = 5.5cm,
+                ytick pos       = left,
+                xtick pos       = bottom,
+                grid            = major,
+                legend style    = {legend columns=4,font=\scriptsize},
+            ]
+
+
+                % ---------
+                % FIRST ROW
+                % ---------
+            
+                \nextgroupplot[
+                    ylabel          = \textbf{Dual gap},
+                    ymode           = log,
+                    cycle list name = cycle_list_synthetic,
+                    xmin = -10,
+                    xmax = 110,
+                    legend to name = {CommonLegend},
+                ]
+                
+                \addlegendentry{PG}
+                \addlegendentry{PG + Scr.}
+                \addlegendentry{PG + Rlx.}
+                \addlegendentry{PG + Scr. \& Rlx.}
+
+                \foreach \solver in {ProximalGradient,ProximalGradientScr,ProximalGradientRlx,ProximalGradientScrRlx} {
+                    \addplot+[restrict x to domain=0:101] table[
+                        x       = grid_iter, 
+                        y       = \solver_iter_sopt,
+                        col sep = comma,
+                    ] {data/Quadratic_L1L2norm(0.5)_50_500_1000_0.5_10_True_0.3_60.0_1e-14.csv};
+                };
+                \coordinate (top) at (rel axis cs:0,1);
+
+                \nextgroupplot[
+                    xmode           = log,
+                    ymode           = log,
+                    cycle list name = cycle_list_synthetic,
+                ]
+
+                \foreach \solver in {ProximalGradient,ProximalGradientScr,ProximalGradientRlx,ProximalGradientScrRlx} {
+                    \addplot table[
+                        x       = grid_time, 
+                        y       = \solver_time_sopt,
+                        col sep = comma,
+                    ] {data/Quadratic_L1L2norm(0.5)_50_500_1000_0.5_10_True_0.3_60.0_1e-14.csv};
+                };
+
+
+                % ----------
+                % SECOND ROW
+                % ----------
+
+                \nextgroupplot[
+                    xlabel          = \textbf{Iterations},
+                    ylabel          = \textbf{Iter. cost},
+                    cycle list name = cycle_list_synthetic,
+                    scaled ticks=false,
+                    xmin = -10,
+                    xmax = 110,
+                    ytick = {100000,500000,1000000}
+                ]
+
+                \foreach \solver in {ProximalGradient,ProximalGradientScr,ProximalGradientRlx,ProximalGradientScrRlx} {
+                    \addplot+[restrict x to domain=0:100] table[
+                        x       = grid_iter, 
+                        y       = \solver_iter_cost,
+                        col sep = comma,
+                    ] {data/Quadratic_L1L2norm(0.5)_50_500_1000_0.5_10_True_0.3_60.0_1e-14.csv};
+                };
+
+                \nextgroupplot[
+                    xlabel          = \textbf{Time},
+                    xmode           = log,
+                    cycle list name = cycle_list_synthetic,
+                ]
+
+                \foreach \solver in {ProximalGradient,ProximalGradientScr,ProximalGradientRlx,ProximalGradientScrRlx} {
+                    \addplot table[
+                        x       = grid_time, 
+                        y       = \solver_time_cost,
+                        col sep = comma,
+                    ] {data/Quadratic_L1L2norm(0.5)_50_500_1000_0.5_10_True_0.3_60.0_1e-14.csv};
+                };
+
+                \coordinate (bot) at (rel axis cs:1,0);
+
+            \end{groupplot}
+            \path (group c1r1.north east) -- node[above]{\ref{CommonLegend}} (group c2r1.north west);
+        \end{scope}
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Regularization path fitting}
+    \begin{tikzpicture}[overlay,remember picture]
+        \node[align=center,text width=4cm] (problem) at (0.5\textwidth,3.75cm) {%
+            \begin{blockcolor}{black}{}
+                \centering
+                $\min_{\pv} \lossfunc(\dic\pv) + \reg\norm{\pv}{1} + \smoothfunc(\pv)$
+            \end{blockcolor}
+        };
+        %
+        \begin{scope}[xshift=1.5cm]
+            \begin{groupplot}[
+                group style     = {
+                    group size      = 2 by 2,
+                    xticklabels at  = edge bottom,
+                    yticklabels at  = edge left,
+                    vertical sep    = 10pt,
+                    horizontal sep  = 10pt,
+                },
+                height          = 3.75cm,
+                width           = 5.5cm,
+                xtick pos       = bottom,
+                ytick pos       = left,
+                ymode           = log,
+                log origin      = infty,
+                ymin            = 0.5,
+                ymax            = 800,
+                ymajorgrids     = true,
+                ybar            = 2*\pgflinewidth,
+                /pgf/bar width  = 5pt,
+                symbolic x coords = {ADMM,CD,PG},
+                xtick           = data,
+                enlarge x limits= 0.25,
+                cycle list name = cycle_list_realdata,
+                legend style    = {legend columns=4,font=\scriptsize},
+                xlabel style    = {align=center,text width=5.4cm}
+            ]
+        
+            % ---------
+            % FIRST ROW
+            % ---------
+        
+            \nextgroupplot[
+                ylabel = \textbf{Accel. factor},
+                legend to name = {CommonLegend},
+            ]
+    
+                \addlegendentry{Algo}
+                \addlegendentry{Algo + Scr.}
+                \addlegendentry{Algo + Rlx.}
+                \addlegendentry{Algo + Scr. \& Rlx.}
+    
+                \foreach \version in {Vanilla,Scr,Rlx,ScrRlx}{
+                    \addplot table[
+                        x       = Method, 
+                        y expr  = {\thisrow{Vanilla}/\thisrow{\version}},
+                        col sep = comma,
+                    ] {data/Quadratic_L1L2norm(0.5)_bcTCGA_True_1.0_0.01_21_3600.0_1e-09.csv};
+                };
+        
+        
+            \nextgroupplot[
+                ylabel right = {\scriptsize{$\smoothfunc(\pv) = \norm{\pv}{2}^2$}},
+            ]
+                \foreach \version in {Vanilla,Scr,Rlx,ScrRlx}{
+                    \addplot table[
+                        x       = Method, 
+                        y expr  = {\thisrow{Vanilla}/\thisrow{\version}},
+                        col sep = comma,
+                    ] {data/Logistic_L1L2norm(0.5)_prostate_True_1.0_0.01_21_3600.0_1e-09.csv};
+                };
+        
+            % ----------
+            % SECOND ROW
+            % ----------
+        
+            \nextgroupplot[
+                xlabel = {\textbf{Bctcga} \\ \scriptsize{Regression - 356 x 17,322}},
+                ylabel = \textbf{Accel. factor},
+            ]
+            \foreach \version in {Vanilla,Scr,Rlx,ScrRlx}{
+                \addplot table[
+                    x       = Method, 
+                    y expr  = {\thisrow{Vanilla}/\thisrow{\version}},
+                    col sep = comma,
+                ] {data/Quadratic_L1normSymTri(0.5,1.0)_bcTCGA_True_1.0_0.01_21_3600.0_1e-09.csv};
+            };
+        
+        
+            \nextgroupplot[
+                xlabel = {\textbf{Cancer} \\ \scriptsize{Classification - 100 x 12,600}},
+                ylabel right = {\scriptsize{$\smoothfunc(\pv) = \transp{\1}\log(\tfrac{1}{1 \scalebox{0.5}[1.0]{\( - \)} \abs{\pv}})$}},
+            ]
+                \foreach \version in {Vanilla,Scr,Rlx,ScrRlx}{
+                    \addplot table[
+                        x       = Method, 
+                        y expr  = {\thisrow{Vanilla}/\thisrow{\version}},
+                        col sep = comma,
+                    ] {data/Logistic_L1normSymTri(0.5,1.0)_prostate_True_1.0_0.01_21_3600.0_1e-09.csv};
+                };
+        
+            \end{groupplot}
+            \path (group c1r1.north east) -- node[above]{\ref{CommonLegend}} (group c2r1.north west);
+        \end{scope}
+    \end{tikzpicture}
+\end{frame}

@@ -1,0 +1,211 @@
+\section{Sparse problems}
+
+\begin{frame}{Framework}
+    \begin{tikzpicture}[overlay,remember picture]
+        \onslide<+-> {
+            \node[align=left,text width=\textwidth] (sparse) at ($(current page.north)+(0,-0.25\textheight)$) {%
+                \textbf{Sparse optimization}
+                \begin{itemize}
+                    \item \emphcolor{ColorOne}{Minimize} a loss with a \emphcolor{ColorOne}{sparse} optimizer
+                    \item Applications in signal processing, machine learning, statistics, etc...
+                \end{itemize}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=center,text width=0.55\textwidth] (problem) at ($(sparse.south)+(0,-0.15\textheight)$) {%
+                \begin{blockcolor}{ColorOne}{Problem of interest}
+                    \centering
+                    $\opt{\pv} \in \textstyle\argmin_{x \in \kR^{\pdim}} \ \lossfunc(\dic\pv) + \underbrace{\lambda \norm{x}{1} + \smoothfunc(\pv)}_{\regfunc(\pv)}$
+                \end{blockcolor}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=left,text width=\textwidth] at ($(problem.south)+(0,-0.225\textheight)$) {%
+                \textbf{Working hypotheses}
+                \begin{itemize}
+                    \item $\lossfunc$ and $\smoothfunc$ are \emphcolor{ColorOne}{proper}, \emphcolor{ColorOne}{closed} and \emphcolor{ColorOne}{convex} functions
+                    \item $\lossfunc$ and $\smoothfunc$ are \emphcolor{ColorOne}{differentiable} with \emphcolor{ColorOne}{Lipschitz-continuous} gradient
+                    \item $\smoothfunc$ is \emphcolor{ColorOne}{separable}
+                    \begin{itemize}
+                        \item[$+$] \scriptsize{$\smoothfunc$ minimized at $\pv = \0$}
+                        \item[$+$] \scriptsize{non-degeneracy assumption}
+                    \end{itemize}
+                \end{itemize}
+            };
+        }
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Solving sparse problems}
+    \begin{tikzpicture}[overlay,remember picture]
+        \onslide<+-> {
+            \node[align=center,text width=4cm] (problem) at (9.5cm,3.75cm) {%
+                \begin{blockcolor}{black}{}
+                    \centering
+                    $\opt{\pv} \in \argmin_{\pv} \ \lossfunc(\dic\pv) + \regfunc(\pv)$
+                \end{blockcolor}
+            };
+            %
+            \node[align=left,text width=\textwidth] (methods) at ($(current page.north)+(0,-0.45\textheight)$) {%
+                \textbf{Solution methods}
+                \begin{itemize}
+                    \item Composite objective: smooth + non-smooth-separable
+                    \item \emphcolor{ColorOne}{First-order} methods accessing $\grad\lossfunc$, $\subdiff\regfunc$, $\text{prox}_{\regfunc}$, ...
+                    \begin{itemize}
+                        \item Proximal gradient descent
+                        \item Coordinate descent
+                        \item Alternating direction method of multipliers
+                        \item ...
+                    \end{itemize}
+                \end{itemize}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=left,text width=\textwidth] (rates) at ($(methods)+(0,-0.4\textheight)$) {%
+                \textbf{Convergence rates}
+                \begin{itemize}
+                    \item Sub-linear: $\pfunc(\iter{\pv}{k}) - \pfunc(\opt{\pv}) \leq  \emphcolor{ColorOne}{\rateconst/{k^{\ratepower}}}$
+                    \item Linear: $\pfunc(\iter{\pv}{k}) - \pfunc(\opt{\pv}) \leq \emphcolor{ColorOne}{\rateconst e^{-\ratepower k}}$
+                    \begin{itemize}
+                        \item[$\rightarrow$] \scriptsize{Asymptotically (Peyré et al., 2015)}
+                        \item[$\rightarrow$] \scriptsize{Strong convexity (Aujol et al., 2023)}
+                    \end{itemize}
+                    \item Super-linear $\pfunc(\iter{\pv}{k}) - \pfunc(\opt{\pv}) \leq \emphcolor{ColorOne}{\rateconst e^{-\ratepower k^2}}$
+                    \begin{itemize}
+                        \item[$\rightarrow$] \scriptsize{Prox-Newton (Bareilles et al., 2022)}
+                        \item[$\rightarrow$] \scriptsize{Jérôme Malick's talk}
+                    \end{itemize}
+                \end{itemize}
+            };
+            %
+            \node[align=left,text width=\textwidth] (rates) at ($(rates)+(8.5,-1)$) {%
+                \begin{axis}[
+                    height          = 3.5cm,
+                    width           = 4.5cm,
+                    ytick pos       = left,
+                    xtick pos       = bottom,
+                    grid            = major,
+                    legend style    = {legend columns=1,font=\scriptsize,at={(0.5,1.1)},anchor=south},
+                    legend cell align=left,
+                    xlabel          = {\scriptsize{Iterations}},
+                    ylabel          = {\scriptsize{Sub-optimality}},
+                    ymode           = log,
+                    xmin            = -10,
+                    xmax            = 110,
+                    cycle list name = cycle_list_synthetic,
+                ]
+                    \addplot table[
+                        x       = iters, 
+                        y       = sublinear,
+                        col sep = comma,
+                    ] {data/rates.csv};
+                    \addlegendentry{Sub-linear}
+
+                    \addplot table[
+                        x       = iters, 
+                        y       = linear,
+                        col sep = comma,
+                    ] {data/rates.csv};
+                    \addlegendentry{Linear}
+                \end{axis}
+            };
+        }
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Sparse structure exploitation}
+    \begin{tikzpicture}[overlay,remember picture]
+        \onslide<+-> {
+            \node[align=center,text width=0.8\textwidth] (observation) at ($(current page.north)+(0,-0.2\textheight)$) {%
+                \begin{blockcolor}{black}{}
+                    \centering
+                    Variable with \emphcolor{ColorOne}{many useless} and \emphcolor{ColorOne}{few informative} entries 
+                \end{blockcolor}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=left,text width=\textwidth] (screening) at ($(observation)+(0,-0.25\textheight)$) {%
+                \textbf{Screening tests}
+                \begin{itemize}
+                    \item Identify \emphcolor{ColorOne}{zeros} in $\opt{\pv}$
+                    \item Dimensionality shrinking
+                    \item Computational savings
+                \end{itemize}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=left,text width=\textwidth] (relaxing) at ($(screening)+(0,-0.35\textheight)$) {%
+                \emphcolor{ColorOne}{\textbf{Relaxing tests}}
+                \begin{itemize}
+                    \item Identify \emphcolor{ColorOne}{non-zeros} in $\opt{\pv}$
+                    \item Objective smoothing
+                    \item Super-linear convergence
+                \end{itemize}
+            };
+        }
+        %
+        %
+        %
+        \onslide<+-> {
+            \node[align=left,text width=\textwidth] (acceleration) at ($(relaxing)+(7.5,0)$) {%
+                \begin{axis}[
+                    height          = 4cm,
+                    width           = 5.5cm,
+                    ytick pos       = left,
+                    xtick pos       = bottom,
+                    xticklabels     = {},
+                    grid            = major,
+                    legend style    = {legend columns=1,font=\scriptsize,at={(0.5,1.1)},anchor=south},
+                    legend cell align=left,
+                    xlabel          = {\scriptsize{Iterations / Time}},
+                    ylabel          = {\scriptsize{Sub-optimality}},
+                    ymode           = log,
+                    cycle list name = cycle_list_synthetic,
+                ]
+                    \addplot table[
+                        x       = grid_iter, 
+                        y       = ProximalGradient_iter_sopt,
+                        col sep = comma,
+                    ] {data/convergence.csv};
+                    \addlegendentry{Algo}
+
+                    \addplot table[
+                        x       = grid_iter, 
+                        y       = ProximalGradientScr_iter_sopt,
+                        col sep = comma,
+                    ] {data/convergence.csv};
+                    \addlegendentry{Algo + Scr.}
+
+                    \addplot table[
+                        x       = grid_iter, 
+                        y       = ProximalGradientRlx_iter_sopt,
+                        col sep = comma,
+                    ] {data/convergence.csv};
+                    \addlegendentry{Algo + Rlx.}
+
+                    \addplot table[
+                        x       = grid_iter, 
+                        y       = ProximalGradientScrRlx_iter_sopt,
+                        col sep = comma,
+                    ] {data/convergence.csv};
+                    \addlegendentry{Algo + Scr. \& Rlx.}
+                \end{axis}
+            };
+        }
+    \end{tikzpicture}
+\end{frame}

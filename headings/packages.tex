@@ -1,40 +1,43 @@
-% Tikz
-\usetikzlibrary{calc}
-\usetikzlibrary{mindmap,trees,shapes,arrows,backgrounds,topaths}
-\usetikzlibrary{decorations.pathmorphing, shapes.geometric}
-
-% Text
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{glossaries}
+\glsdisablehyper
 \usepackage{enumitem}
-\usepackage{ulem}
+\newcommand{\labelitemi}{$\bullet$}
+\newcommand{\labelitemii}{$\circ$}
 \usepackage{pifont}
-
-% Maths
 \usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amsthm}
-\usepackage{amsopn}
-
-% Plots
-\usepackage{pgfplots}
+\usepackage{stmaryrd,booktabs}
+\usepackage{tikz,pgfplots,forest}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{matrix}
+\usetikzlibrary{hobby}
+\pgfplotsset{compat=newest}
 \usepgfplotslibrary{groupplots}
+\usepackage{soul,ulem}
+\usepackage{graphicx}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{algorithm,algpseudocode}
 
-% Tables
-\usepackage{booktabs}
-\usepackage{array}
-\newcolumntype{L}{>$l<$}
-\arraycolsep=1.4pt
-\setlength{\tabcolsep}{3pt}
+\pgfplotscreateplotcyclelist{cycle_list_synthetic}{
+    Apricot, ultra thick, smooth\\
+    BurntOrange, ultra thick, smooth\\
+    RedOrange, ultra thick, smooth\\
+    BrickRed, ultra thick, smooth\\
+}
 
-% Algos
-\usepackage[ruled]{algorithm2e}
+\pgfplotscreateplotcyclelist{cycle_list_realdata}{
+    Dandelion,fill=Dandelion!30\\
+    Orange,fill=Orange!30\\
+    Red,fill=Red!30\\
+    Sepia,fill=Sepia!30\\
+}
 
-% Pgfplot
 \pgfplotsset{
-    legend image code/.code={
-        \draw[mark repeat=2,mark phase=2] plot coordinates {
-            (0cm,0cm)
-            (0.25cm,0cm)
-            (0.25cm,0cm)
-        };
+    ylabel right/.style={
+        after end axis/.append code={
+            \node [rotate=270, anchor=north] at (rel axis cs:1.25,0.5) {#1};
+        }   
     }
 }

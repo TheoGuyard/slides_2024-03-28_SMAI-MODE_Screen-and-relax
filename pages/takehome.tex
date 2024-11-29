@@ -1,0 +1,26 @@
+\begin{frame}{}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node at ($(current page.north)+(0,-2)$) {\Large\textbf{\emphcolor{ColorOne}{Take-home message}}};
+    \node[align=left,text width=1.1\textwidth] at ($(current page.north)+(0,-5.5)$) {
+      \begin{itemize}
+        \item Structure matters in sparse problems
+        \item Identification of \emphcolor{ColorOne}{zeros}
+        \begin{itemize}
+          \item Screening tests
+          \item Allows for dimensionality reduction 
+          \item Computational savings
+        \end{itemize}
+        \item Identification of \emphcolor{ColorOne}{non-zeros}
+        \begin{itemize}
+          \item Relaxing tests
+          \item Allows for objective smoothing
+          \item Faster convergence rate
+        \end{itemize}
+        \item \emphcolor{ColorOne}{Screen \& Relax} strategy to benefit from \begin{itemize}
+          \item Computational savings
+          \item Accelerated convergence
+        \end{itemize}
+      \end{itemize}
+    };
+  \end{tikzpicture}
+\end{frame}
